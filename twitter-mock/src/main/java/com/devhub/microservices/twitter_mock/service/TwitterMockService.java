@@ -12,6 +12,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.random.RandomGenerator;
 
@@ -20,12 +21,14 @@ import java.util.random.RandomGenerator;
 public class TwitterMockService {
 
     private final ChatClient chatClient;
+    List<String> topics = List.of("pets", "sports", "technology", "music", "travel", "food", "movies", "books", "fitness", "gaming");
+    List<String> tones = List.of("funny", "serious", "sarcastic", "optimistic", "pessimistic", "enthusiastic", "informative", "casual", "formal", "playful");
     public final String PROMPT = """
-                Generate a random tweet about pets in text format.
-                You can pick any animal.
-                Make it funny or surprising or sad or angry, any emotion.
-                Do NOT repeat older ideas.
-                Just the tweet text.
+                write one short tweet about %s.
+                tone should feel %s.
+                use natural casual human language.
+                do not announce that you are writing a tweet.
+                do not start with the word Just.
             """;
 
     @Autowired
@@ -36,7 +39,7 @@ public class TwitterMockService {
     public Flux<Status> getTweets() {
 
         return Flux.interval(Duration.ofSeconds(5))
-                .delayElements(Duration.ofSeconds(getRandomNumberInRange(0, 5)))
+                .onBackpressureBuffer()
                 .flatMap(_ -> getRandomTweet())
                 .map(responseText -> {
                     Status tweet = Status.builder()
@@ -51,7 +54,9 @@ public class TwitterMockService {
     }
 
     private Mono<String> getRandomTweet() {
-        return Mono.fromCallable(() -> chatClient.prompt(PROMPT + "\n\nseed :" + UUID.randomUUID())
+        String topic = topics.get(getRandomNumberInRange(0, topics.size() - 1));
+        String tone = tones.get(getRandomNumberInRange(0, tones.size() - 1));
+        return Mono.fromCallable(() -> chatClient.prompt(PROMPT.formatted(topic, tone) + "\n\nseed :" + UUID.randomUUID())
                         .options(ChatOptions.builder().temperature(1.3).build())
                         .call()
                         .content()

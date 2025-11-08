@@ -26,7 +26,7 @@
 	</scm>
 	<properties>
 		<spring-boot.version>3.5.7</spring-boot.version>
-		<java.version>25</java.version>
+		<java.version>23</java.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -61,6 +61,11 @@
 				<artifactId>twitter4j-core</artifactId>
 				<version>4.0.6</version>
 			</dependency>
+			<dependency>
+				<groupId>com.devhub.microservices</groupId>
+				<artifactId>twitter-mock</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -87,6 +92,7 @@
 
     <modules>
         <module>twitter-mock</module>
-    </modules>
+		<module>twitter-to-kafka</module>
+	</modules>
 
 </project>
