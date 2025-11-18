@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Check if tag is provided
+if [ $# -eq 0 ]; then
+    echo "Usage: ./createTag <version-tag> [username]"
+    echo "Example: ./createTag 1.0.0 myusername"
+    exit 1
+fi
+
+TAG=$1
+USERNAME=${2:-praneethnistala}  # Default username if not provided
+IMAGE_NAME="twitter-mock"
+FULL_IMAGE_NAME="$USERNAME/$IMAGE_NAME:$TAG"
+
+# Check if Docker is running
+if ! docker info >/dev/null 2>&1; then
+    echo "Error: Docker is not running"
+    exit 1
+fi
+
+# Build the image
+echo "Building Docker image..."
+docker build -t $IMAGE_NAME .
+
+# Tag the image
+echo "Tagging image as $FULL_IMAGE_NAME"
+docker tag $IMAGE_NAME $FULL_IMAGE_NAME
+
+# Ask for confirmation before pushing
+read -p "Do you want to push this image to Docker Hub? (y/n) " -n 1 -r
+echo    # Move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    # Login to Docker Hub
+    echo "Logging in to Docker Hub..."
+    docker login
+    
+    # Push the image
+    echo "Pushing $FULL_IMAGE_NAME to Docker Hub..."
+    docker push $FULL_IMAGE_NAME
+    
+    echo "Successfully pushed $FULL_IMAGE_NAME"
+else
+    echo "Image tagged as $FULL_IMAGE_NAME but not pushed"
+    echo "You can push it later with: docker push $FULL_IMAGE_NAME"
+fi
+
+echo "Done!"

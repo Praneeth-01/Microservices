@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.devhub.microservices</groupId>
 	<artifactId>twitter-mock</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>twitter-mock</name>
 	<description>This application provides an API through which we can retreive mock tweets</description>
 	<url/>
@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>23</java.version>
+		<java.version>21</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -51,11 +51,6 @@
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-starter-model-ollama</artifactId>
 			<version>1.0.3</version>
-		</dependency>
-		<dependency>
-			<groupId>com.devhub.microservices</groupId>
-			<artifactId>base</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

@@ -1,5 +1,3 @@
-version: '3.8'
-
 networks:
   kafka-net:
     driver: bridge
@@ -88,8 +86,63 @@ services:
       KAFKA_MIN_INSYNC_REPLICAS: 2
       KAFKA_LISTENERS: INTERNAL://:29094,EXTERNAL://:9094
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    networks:
+      kafka-net:
+        ipv4_address: 172.25.0.20
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "sh -c 'ollama serve & 
+       sleep 5 && 
+       ollama pull gemma3:4b && 
+       tail -f /dev/null'"
+
+  twitter-mock:
+    image: praneethn01/twitter-mock:0.0.3-SNAPSHOT
+    container_name: twitter-mock
+    networks:
+      - kafka-net
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+      - ollama
+    environment:
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka1:29092,kafka2:29093,kafka3:29094
+      SPRING_KAFKA_PRODUCER_BOOTSTRAP-SERVERS: kafka1:29092,kafka2:29093,kafka3:29094
+      SPRING_KAFKA_CONSUMER_BOOTSTRAP-SERVERS: kafka1:29092,kafka2:29093,kafka3:29094
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+#  twitter-to-kafka:
+#    build:
+#      context: ../twitter-to-kafka
+#      dockerfile: Dockerfile
+#    container_name: twitter-to-kafka
+#    hostname: twitter-to-kafka
+#    networks:
+#      kafka-net:
+#        ipv4_address: 172.25.0.20
+#    depends_on:
+#      - kafka1
+#      - kafka2
+#      - kafka3
+#      - twitter-mock
+#    ports:
+#      - "8081:8081"
+#    restart: unless-stopped
+
 volumes:
   kafka1_data:
   kafka2_data:
   kafka3_data:
   zookeeper_data:
+  ollama_data:

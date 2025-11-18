@@ -14,7 +14,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.random.RandomGenerator;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @Service
@@ -40,10 +40,10 @@ public class TwitterMockService {
 
         return Flux.interval(Duration.ofSeconds(5))
                 .onBackpressureBuffer()
-                .flatMap(_ -> getRandomTweet())
+                .flatMap(t -> getRandomTweet())
                 .map(responseText -> {
                     Status tweet = Status.builder()
-                            .id(RandomGenerator.getDefault().nextLong())
+                            .id(ThreadLocalRandom.current().nextLong())
                             .createdAt(new Date())
                             .userId(getRandomNumberInRange(1, 1000))
                             .text(responseText)
@@ -64,6 +64,6 @@ public class TwitterMockService {
     }
 
     private int getRandomNumberInRange(int min, int max) {
-        return RandomGenerator.getDefault().nextInt(min, max + 1);
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 }
