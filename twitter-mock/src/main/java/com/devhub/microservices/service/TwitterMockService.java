@@ -1,6 +1,6 @@
-package com.devhub.microservices.twitter_mock.service;
+package com.devhub.microservices.service;
 
-import com.devhub.microservices.twitter_mock.model.Status;
+import com.devhub.microservices.model.Status;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.ChatOptions;

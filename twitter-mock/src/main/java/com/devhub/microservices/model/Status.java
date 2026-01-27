@@ -1,4 +1,4 @@
-package com.devhub.microservices.twitter_mock.model;
+package com.devhub.microservices.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

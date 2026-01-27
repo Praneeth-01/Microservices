@@ -1,6 +1,6 @@
 package com.devhub.microservices.config;
 
-import com.devhub.microservices.twitter_mock.model.Status;
+import com.devhub.microservices.model.Status;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

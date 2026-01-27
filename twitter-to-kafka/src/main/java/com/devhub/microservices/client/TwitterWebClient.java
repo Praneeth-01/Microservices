@@ -1,23 +1,19 @@
 package com.devhub.microservices.client;
 
-import com.devhub.microservices.twitter_mock.model.Status;
+import com.devhub.microservices.model.Status;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
+import javax.validation.constraints.NotNull;
+
 @Component
 public class TwitterWebClient {
 
-    @Value("${twitter.mock.url}")
-    private String twitterUrl;
-
     private final WebClient webClient;
 
-    public TwitterWebClient() {
-        if (twitterUrl == null) {
-            throw new IllegalArgumentException("Twitter URL is not set");
-        }
+    public TwitterWebClient(@NotNull @Value("${twitter.mock.url}") String twitterUrl) {
         this.webClient = WebClient.builder().baseUrl(twitterUrl).build();
     }
 

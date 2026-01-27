@@ -1,6 +1,6 @@
 package com.devhub.microservices.producer;
 
-import com.devhub.microservices.twitter_mock.model.Status;
+import com.devhub.microservices.model.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

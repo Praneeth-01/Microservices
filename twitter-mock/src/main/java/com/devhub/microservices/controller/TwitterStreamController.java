@@ -1,7 +1,7 @@
-package com.devhub.microservices.twitter_mock.controller;
+package com.devhub.microservices.controller;
 
-import com.devhub.microservices.twitter_mock.model.Status;
-import com.devhub.microservices.twitter_mock.service.TwitterMockService;
+import com.devhub.microservices.model.Status;
+import com.devhub.microservices.service.TwitterMockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
