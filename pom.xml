@@ -28,7 +28,7 @@
 		<spring-boot.version>3.5.7</spring-boot.version>
 		<spring-cloud.version>2025.0.1</spring-cloud.version>
 		<java.version>21</java.version>
-		<lombok.version>1.18.30</lombok.version>
+		<lombok.version>1.18.42</lombok.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -114,6 +114,7 @@
     <modules>
         <module>twitter-mock</module>
 		<module>twitter-to-kafka</module>
+		<module>kafka-to-elastic</module>
         <module>spring-cloud-config</module>
     </modules>
 
